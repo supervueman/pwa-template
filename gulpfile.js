@@ -70,7 +70,7 @@ gulp.task('imagemin', function() {
 	return gulp.src('app/img/**/*')
 	// .pipe(cache(imagemin())) // Cache Images
 	.pipe(imagemin())
-	.pipe(gulp.dest('dist/img'));
+	.pipe(gulp.dest('public/img'));
 });
 
 gulp.task('build', ['removedist', 'imagemin', 'sass', 'js'], function() {
@@ -81,20 +81,20 @@ gulp.task('build', ['removedist', 'imagemin', 'sass', 'js'], function() {
 		'app/.htaccess',
     'app/manifest.json',
     'app/sw.js'
-		]).pipe(gulp.dest('dist'));
+	]).pipe(gulp.dest('public'));
 
 	var buildCss = gulp.src([
 		'app/css/main.min.css',
-		]).pipe(gulp.dest('dist/css'));
+		]).pipe(gulp.dest('public/css'));
 
 	var buildJs = gulp.src([
 		'app/js/scripts.min.js',
     'app/js/common.js',
-		]).pipe(gulp.dest('dist/js'));
+		]).pipe(gulp.dest('public/js'));
 
 	var buildFonts = gulp.src([
 		'app/fonts/**/*',
-		]).pipe(gulp.dest('dist/fonts'));
+		]).pipe(gulp.dest('public/fonts'));
 
 });
 
@@ -112,9 +112,9 @@ gulp.task('deploy', function() {
 });
 
 gulp.task('rsync', function() {
-	return gulp.src('dist/**')
+	return gulp.src('public/**')
 	.pipe(rsync({
-		root: 'dist/',
+		root: 'public/',
 		hostname: 'username@yousite.com',
 		destination: 'yousite/public_html/',
 		// include: ['*.htaccess'], // Скрытые файлы, которые необходимо включить в деплой
@@ -125,7 +125,7 @@ gulp.task('rsync', function() {
 	}));
 });
 
-gulp.task('removedist', function() { return del.sync('dist'); });
+gulp.task('removedist', function() { return del.sync('public'); });
 gulp.task('clearcache', function () { return cache.clearAll(); });
 
 gulp.task('location', function() { return setTimeout(function() { gutil.log('Your code is running at http://fullpage-template-webpackmen.c9users.io:8080/.') }, 2000); });
